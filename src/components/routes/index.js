@@ -1,0 +1,1 @@
+export { PrivatePouts } from './private-routs';
