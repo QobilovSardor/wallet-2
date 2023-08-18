@@ -3,7 +3,7 @@ import AuthReducer from '../slice/auth'
 
 export default configureStore({
 	reducer: {
-		AuthReducer
+		auth: AuthReducer
 	},
-	devTools: process.env.NODE_ENV === 'production',
+	devTools: process.env.NODE_ENV !== 'production',
 })
