@@ -3,7 +3,7 @@ import { Input } from '../ui'
 import assets from '../../assets';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { authUserStart } from '../../slice/auth';
+import auth, { authUserFailure, authUserStart, authUserSuccess } from '../../slice/auth';
 
 export const Register = () => {
 	const [fullName, setFullName] = useState('');
@@ -11,12 +11,16 @@ export const Register = () => {
 	const [password, setPassword] = useState('');
 	const { isLoading } = useSelector(state => state.auth)
 	const dispatch = useDispatch();
-	console.log(isLoading);
 
 	const registerHandler = async (e) => {
 		e.preventDefault();
 		dispatch(authUserStart());
 		
+		try {
+			dispatch(authUserSuccess({fullName, email, password}))
+		} catch (error) {
+			dispatch(authUserFailure())
+		}
 	}
 
 	return (

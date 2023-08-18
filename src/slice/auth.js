@@ -14,12 +14,16 @@ export const authSlice = createSlice({
 		authUserStart: state => {
 			state.isLoading = true;
 		},
-		authUserSuccess: state => {
+		authUserSuccess: (state, action) => {
 			state.isLoading = false;
-			state.user = state.user
+			state.user = action.payload;
+			state.error = null;
+			state.loggedIn = true;
 		},
-		authUserFailure: state => {
-
+		authUserFailure: (state, action) => {
+			state.isLoading = false;
+			state.user = null;
+			state.error = action.payload
 		}
 	}
 })
