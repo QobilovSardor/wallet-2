@@ -1,14 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { setToken } from "../helpers/persistent-storage";
 
 const initialState = {
-	user: null,
-	error: null,
 	isLoading: false,
 	loggedIn: false,
+	user: null,
+	error: null,
 }
 
-export const authSlice = createSlice({
-	name: "auth",
+const authSlice = createSlice({
+	name: 'auth',
 	initialState,
 	reducers: {
 		authUserStart: state => {
@@ -16,14 +17,18 @@ export const authSlice = createSlice({
 		},
 		authUserSuccess: (state, action) => {
 			state.isLoading = false;
-			state.user = action.payload;
-			state.error = null;
 			state.loggedIn = true;
+			state.user = action.payload.data.data;
+			state.error = null;
+			setToken('token', `Bearer ${action.payload.data.data.token}`);
 		},
 		authUserFailure: (state, action) => {
 			state.isLoading = false;
-			state.user = null;
 			state.error = action.payload
+		},
+		logOut: state => {
+			state.user = null;
+			state.loggedIn = false;
 		}
 	}
 })

@@ -8,7 +8,7 @@ export const setToken = (key, data) => {
 
 export const getToken = (key) => {
 	try {
-		localStorage.getItem(key);
+		return localStorage.getItem(key);
 	} catch (error) {
 		throw error
 	}
@@ -16,7 +16,7 @@ export const getToken = (key) => {
 
 export const removeToken = (key) => {
 	try {
-		localStorage.removeItem(key);
+		return localStorage.removeItem(key);
 	} catch (error) {
 		throw error
 	}

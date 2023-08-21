@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Input } from '../ui'
 import assets from '../../assets';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import auth, { authUserFailure, authUserStart, authUserSuccess } from '../../slice/auth';
+import { authUserFailure, authUserStart, authUserSuccess } from '../../slice/auth';
+import { AuthServices } from '../../services/auth';
+import { Error } from '../../errors/error';
 
 export const Register = () => {
 	const [fullName, setFullName] = useState('');
@@ -11,15 +13,20 @@ export const Register = () => {
 	const [password, setPassword] = useState('');
 	const { isLoading } = useSelector(state => state.auth)
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
-	const registerHandler = async (e) => {
+
+	const registerHandler = async e => {
 		e.preventDefault();
 		dispatch(authUserStart());
+		const userData = { fullName, email, password }
 		
 		try {
-			dispatch(authUserSuccess({fullName, email, password}))
+			const response = await AuthServices.authPost('register/', userData);
+			dispatch(authUserSuccess(response));
+			navigate('/home');
 		} catch (error) {
-			dispatch(authUserFailure())
+			dispatch(authUserFailure(error.response.data.message));
 		}
 	}
 
@@ -36,6 +43,8 @@ export const Register = () => {
 			</div>
 			<form onSubmit={registerHandler} className="mt-8 bg-white flex flex-col justify-end h-100 px-6 pt-11 pb-4 rounded-t-2xl">
 				<h2 className="text-2xl font-bold mb-6">Ro'yxatdan o'tish</h2>
+
+				<Error />
 
 				<div className="space-y-5">
 					<Input

@@ -3,7 +3,8 @@ import { Input } from '../ui';
 import assets from '../../assets';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { authUserStart, authUserSuccess } from '../../slice/auth';
+import { authUserFailure, authUserStart, authUserSuccess } from '../../slice/auth';
+import { AuthServices } from '../../services/auth';
 
 export const Login = () => {
 	const navigate = useNavigate();
@@ -14,14 +15,16 @@ export const Login = () => {
 
 	const handlerLogin = async e => {
 		e.preventDefault();
-
 		dispatch(authUserStart());
+		const userData = {email, password}
 
-		// try {
-		// 	dispatch(authUserSuccess());
-		// } catch (error) {
-		// 	console.log(error);
-		// }
+		try {
+			const response = await AuthServices.authPost('login/', userData);
+			dispatch(authUserSuccess(response));
+			navigate('/home');
+		} catch (error) {
+			dispatch(authUserFailure(error.response.data.message));
+		}
 	}
 
 	return (
