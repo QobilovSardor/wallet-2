@@ -4,7 +4,8 @@ import { Footer } from '../../layouts/footer';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeToken } from '../../../helpers/persistent-storage';
-import { logOut } from '../../../slice/auth';
+import { authUserFailure, authUserSuccess, logOut } from '../../../slice/auth';
+import { AuthServices } from '../../../services/auth';
 
 export const Profile = () => {
 	const {user} = useSelector(state => state.auth);
@@ -16,6 +17,18 @@ export const Profile = () => {
 		removeToken('token');
 		navigate('/')
 	}
+
+	const getUser = async () => {
+		try {
+			const response = await AuthServices.getProfile()
+			dispatch(authUserSuccess(response))
+		} catch (error) {
+			dispatch(authUserFailure(error))
+		}
+	}
+	useEffect(() => {
+		getUser();
+	}, [])
 
 	return (
 		<div className='relative flex flex-col justify-between h-screen'>

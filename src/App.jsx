@@ -9,7 +9,6 @@ import { AuthServices, CategoryServices } from './services';
 import { getToken } from './helpers/persistent-storage';
 import { authUserSuccess } from './slice/auth';
 import { getCategoryFailure, getCategoryStart, getCategorySuccess } from './slice/category';
-import { Demo } from './demo/date'
 
 export const App = () => {
 	const dispatch = useDispatch();
@@ -52,17 +51,16 @@ export const App = () => {
 	useEffect(() => {
 		const token = getToken('token');
 		if (token) getUser();
-		getCategories();		
+		getCategories();
 	}, [])
 
 
 	return (
 		<Routes>
-			<Route path='/user' element={<Demo />} />
 			<Route element={<PrivatePouts />}>
 				<Route path='/home' element={<Home />} />
 				<Route path='/profile' element={<Profile />} />
-				<Route path='/update-profile' element={<UpdateProfile getUser={getUser} />} />
+				<Route path='/update-profile' element={<UpdateProfile />} />
 			</Route>
 			<Route path='/' element={<Intro />} />
 			<Route path='/login' element={<Login />} />
