@@ -4,7 +4,7 @@ import assets from '../../assets';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { authUserFailure, authUserStart, authUserSuccess } from '../../slice/auth';
-import { AuthServices } from '../../services/auth';
+import { AuthServices } from '../../services';
 import { Error } from '../../errors/error';
 
 export const Register = () => {
@@ -14,7 +14,6 @@ export const Register = () => {
 	const { isLoading } = useSelector(state => state.auth)
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-
 
 	const registerHandler = async e => {
 		e.preventDefault();

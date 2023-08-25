@@ -4,15 +4,17 @@ import { Footer } from '../../layouts/footer';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeToken } from '../../../helpers/persistent-storage';
+import { logOut } from '../../../slice/auth';
 
 export const Profile = () => {
 	const {user} = useSelector(state => state.auth);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	const logOut = () => {
-		removeToken('token');
+
+	const logOutHandler = () => {
 		dispatch(logOut())
-		navigate('/');
+		removeToken('token');
+		navigate('/')
 	}
 
 	return (
@@ -30,7 +32,7 @@ export const Profile = () => {
 						</div>
 					</Link>
 					<div className='relative z-10 pt-36'>
-						<button onClick={logOut} className='flex items-center justify-between bg-warning rounded-lg text-white p-4 w-full'>
+						<button onClick={logOutHandler} className='flex items-center justify-between bg-warning rounded-lg text-white p-4 w-full'>
 							<div className='flex items-center space-x-3'>
 								<img src={assets.logOut} alt="log out img" />
 								<p className='capitalize'>Log Out</p>
